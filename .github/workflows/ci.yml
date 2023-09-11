@@ -1,4 +1,4 @@
-name: Build and push Docker image to Amazon ECR
+name: Build and push Docker image to DockerHub
 on:
   workflow_dispatch:
   push:
@@ -23,7 +23,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ env.ECR_REGISTRY }}/${{env.IMAGE_NAME}}:${{ env.IMAGE_TAG }}
+        tags: ${{env.IMAGE_NAME}}:${{ env.IMAGE_TAG }}
         file: Dockerfile
       env:
         DOCKER_BUILDKIT: 1
