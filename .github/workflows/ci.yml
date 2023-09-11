@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
 env:
-  IMAGE_NAME: ku-devops-webinar
+  IMAGE_NAME: amanasterdio/ku-devops-webinar
   IMAGE_TAG: latest
 jobs:
   build-and-push:
@@ -27,5 +27,5 @@ jobs:
         file: Dockerfile
       env:
         DOCKER_BUILDKIT: 1
-        DOCKER_CLI_EXPERIMENTAL: enabled
+        DOCKER_CLI_EXPERIMENTAL: enableds
       id: docker-build
