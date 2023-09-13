@@ -46,3 +46,4 @@ jobs:
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
           docker pull amanasterdio/ku-devops-webinar:latest
           docker run -dit -p 80:80 amanasterdio/ku-devops-webinar:latest
+          docker ps
