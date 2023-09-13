@@ -43,9 +43,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         envs: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, APPLICATION_PORT
         script: |
-          cat <<< "PORT=$APPLICATION_PORT" > /home/.env
+          cat <<< "PORT=$APPLICATION_PORT" > /home/deploy/.env
           docker stop $(docker ps -a -q)
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
           docker pull amanasterdio/ku-devops-webinar:latest
-          docker run -dit -p $APPLICATION_PORT:$APPLICATION_PORT --env-file /home/.env amanasterdio/ku-devops-webinar:latest
+          docker run -dit -p $APPLICATION_PORT:$APPLICATION_PORT --env-file /home/deploy/.env amanasterdio/ku-devops-webinar:latest
           docker ps
