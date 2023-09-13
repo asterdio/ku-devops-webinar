@@ -46,7 +46,6 @@ jobs:
           cat <<EOF > .env
           PORT="$APPLICATION_PORT"
           EOF
-          cat .env
           docker stop $(docker ps -a -q)
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
           docker pull amanasterdio/ku-devops-webinar:latest
