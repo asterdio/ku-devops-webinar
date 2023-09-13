@@ -35,15 +35,20 @@ jobs:
       env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          APPLICATION_PORT: ${{ secrets.APP_PORT }}
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        envs: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN
+        envs: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, APPLICATION_PORT
         script: |
+          cat <<EOF > .env
+          PORT="$APPLICATION_PORT"
+          EOF
+          cat .env
           docker stop $(docker ps -a -q)
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
           docker pull amanasterdio/ku-devops-webinar:latest
-          docker run -dit -p 80:80 amanasterdio/ku-devops-webinar:latest
+          docker run -dit -p 80:80 --env-file .env amanasterdio/ku-devops-webinar:latest
           docker ps
