@@ -30,6 +30,21 @@ jobs:
         DOCKER_CLI_EXPERIMENTAL: enableds
       id: docker-build
       
+    - name: create env file
+      uses: appleboy/ssh-action@master
+      env:
+          APPLICATION_PORT: ${{ secrets.APP_PORT }}
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        envs: APPLICATION_PORT
+        run: |
+          cat <<EOF > /home/.env
+          PORT="$APPLICATION_PORT"
+          EOF
+          
     - name: Deploy package to prduction
       uses: appleboy/ssh-action@master
       env:
@@ -43,11 +58,8 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         envs: DOCKERHUB_USERNAME, DOCKERHUB_TOKEN, APPLICATION_PORT
         script: |
-          cat <<EOF > .env
-          PORT="$APPLICATION_PORT"
-          EOF
           docker stop $(docker ps -a -q)
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
           docker pull amanasterdio/ku-devops-webinar:latest
-          docker run -dit -p 80:80 --env-file .env amanasterdio/ku-devops-webinar:latest
+          docker run -dit -p $APPLICATION_PORT:$APPLICATION_PORT --env-file /home/.env amanasterdio/ku-devops-webinar:latest
           docker ps
