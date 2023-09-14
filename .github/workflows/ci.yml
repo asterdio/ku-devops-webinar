@@ -46,7 +46,7 @@ jobs:
           cat <<< "PORT=$APPLICATION_PORT" > /home/deploy/.env
           docker stop $(docker ps -a -q)
           docker login  registry-1.docker.io -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
-          docker compose down
-          docker compose pull
-          docker compose up -d
-          docker compose ps
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d
+          docker-compose ps
